@@ -1,0 +1,33 @@
+package Tree;
+
+/**
+ * Esta interfaz define la funcionalidad de un árbol en donde los
+ * elementos se guardan en nodos.
+ *
+ * @param <V> El tipo de elemento que se va a guardar en el nodo. Este debe implementar la interfaz <b>Element</b>.
+ */
+public interface Tree <V> {
+	
+	/**
+	 * Busca un elemento dentro del arbol. Si no existe devuelve null.
+	 *
+	 * @param element El elemento que se quiere buscar en el arbol.
+	 * @return El nodo buscado. En caso de que el nodo no exista devuelve null.
+	 */
+	public abstract Node<V> search (V element);
+	
+	/**
+	 * Insertion.
+	 *
+	 * @param element the element
+	 */
+	public abstract void insertion (V element);
+	
+	/**
+	 * Delete.
+	 *
+	 * @param element the element
+	 * @return the node
+	 */
+	public abstract Node<V> delete (V element);
+}

@@ -1,0 +1,7 @@
+package Tree;
+
+public interface Node <V> {
+	public abstract int getID ();
+	
+	public abstract V getElement ();
+}

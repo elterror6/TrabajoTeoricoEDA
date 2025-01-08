@@ -1,0 +1,12 @@
+package Tree;
+
+public interface RBTree <V> {
+	protected abstract void rotation (boolean side, Node<V> node);
+	public abstract Node<V> search (Element<V> element);
+	public abstract void insertion (Element<V> element);
+	public abstract Node<V> delete (Element<V> element);
+}
+
+private class Node <V> {
+	
+}

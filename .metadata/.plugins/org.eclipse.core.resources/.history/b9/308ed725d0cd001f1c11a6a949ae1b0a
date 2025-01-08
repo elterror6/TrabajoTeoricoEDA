@@ -1,0 +1,7 @@
+package Tree;
+
+public interface RBTree <V> {
+	public abstract Node<V> search (Element element);
+	public abstract void insertion (Element element);
+	public abstract Node<V> delete (Element element);
+}

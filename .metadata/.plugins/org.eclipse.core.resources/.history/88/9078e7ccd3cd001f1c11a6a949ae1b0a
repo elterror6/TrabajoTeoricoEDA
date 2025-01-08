@@ -1,0 +1,16 @@
+package Tree;
+
+/**
+ * Esta interfaz define la existencia de un número entero usado
+ * como ID para guardar en un nodo de un árbol binario.
+ */
+public interface Element {
+	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public abstract int getID ();
+	
+}

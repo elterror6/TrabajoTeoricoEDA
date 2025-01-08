@@ -1,0 +1,23 @@
+package Tree;
+
+/**
+ * Esta interfaz representa un nodo de una estructura de árbol.
+ *
+ * @param <V> the value type
+ */
+public interface Node <V> {
+	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public abstract int getID ();
+	
+	/**
+	 * Gets the element.
+	 *
+	 * @return the element
+	 */
+	public abstract V getElement ();
+}

@@ -1,0 +1,10 @@
+package Tree;
+
+public class Node <V> {
+	Node <V> parent;
+	Node <V> rightChild;
+	Node <V> leftChild;
+	boolean color;
+	Element element;
+	
+}

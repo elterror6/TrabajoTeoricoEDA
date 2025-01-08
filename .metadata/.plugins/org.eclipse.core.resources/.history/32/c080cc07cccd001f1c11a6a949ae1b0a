@@ -1,0 +1,6 @@
+package Tree;
+
+public interface RBTree <V> {
+	public abstract void rotation (boolean side, Node<V> node);
+	public abstract Node<V> search ();
+}

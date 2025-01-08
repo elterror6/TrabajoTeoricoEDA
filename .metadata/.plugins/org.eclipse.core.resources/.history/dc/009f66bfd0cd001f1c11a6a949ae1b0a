@@ -1,0 +1,35 @@
+package Tree;
+
+/**
+ * Esta interfaz define la funcionalidad de un árbol en donde los
+ * elementos se guardan en nodos.
+ * 
+ * @author Daniel Díaz García
+ *
+ * @param <V> El tipo de elemento que se va a guardar en el nodo.
+ */
+public interface Tree <V> {
+	
+	/**
+	 * Search.
+	 *
+	 * @param element the element
+	 * @return the node
+	 */
+	public abstract Node<V> search (Element element);
+	
+	/**
+	 * Insertion.
+	 *
+	 * @param element the element
+	 */
+	public abstract void insertion (Element element);
+	
+	/**
+	 * Delete.
+	 *
+	 * @param element the element
+	 * @return the node
+	 */
+	public abstract Node<V> delete (Element element);
+}
