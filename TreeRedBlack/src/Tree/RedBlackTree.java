@@ -1,7 +1,7 @@
 package Tree;
 
 public class RedBlackTree <V> implements BinaryTree <V> {
-	
+	/** Este atributo representa el nodo raíz o padre del árbol rojo-negro. */
 	private Node<V> root;
 	/**
 	 * Instancia un nuevo árbol rojo-negro vacío.
