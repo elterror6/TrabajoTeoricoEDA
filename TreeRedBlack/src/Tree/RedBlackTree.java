@@ -45,11 +45,44 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 			((innerNode<V>) node).setParent(x);
 		}
 	}
-
+	
 	@Override
 	public Node<V> search(V element) {
-		// TODO Realizar método que busque un elemento en un árbol rojo-negro
-		return null;
+		// TODO El elemento puede no implementar la clase Element.
+		Node <V> find = null;
+		if (this.root != null) {
+			if (((Element) element).getID() > this.root.getID()) {
+				find = search (((innerNode<V>) this.root).getRightChild(),element);
+			} else if (((Element) element).getID() < this.root.getID()) {
+				find = search (((innerNode<V>) this.root).getRightChild(),element);
+			} else {
+				find = this.root;
+			}
+		}
+		return find;
+	}
+	/**
+	 * Este método busca recursivamente un nodo con el elemento dado. Si el identificador
+	 * del elemento es mayor que la del nodo actual va hacia el hijo derecho, si es menor
+	 * hacia el hijo izquierdo y si es igual lo devuelve.
+	 * 
+	 * @param node el nodo en el que esta actualmente.
+	 * @param element el elemento que se quiere buscar.
+	 * @return El nodo que se esta buscando, si no existe devuelve <b>null</b>.
+	 */
+	private Node<V> search (Node<V> node, V element) {
+		// TODO El elemento puede no implementar la clase Element.
+		Node <V> find = null;
+		if (node.getElement() != null) {
+			if (((Element) element).getID() > node.getID()) {
+				find = search(((innerNode<V>) node).getRightChild(),element); 
+			} else if (((Element) element).getID() < node.getID()) {
+				find = search(((innerNode<V>) node).getRightChild(),element); 
+			} else {
+				find = node;
+			}
+		}
+		return find;
 	}
 
 	@Override
