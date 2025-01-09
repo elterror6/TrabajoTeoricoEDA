@@ -1,6 +1,41 @@
 package Tree;
 
 public class RedBlackTree <V> implements BinaryTree <V> {
+	
+	private Node<V> root;
+	/**
+	 * Instancia un nuevo árbol rojo-negro vacío.
+	 */
+	public RedBlackTree () {
+		this.root = null;
+	}
+	
+	/**
+	 * Este método es utilizado para rotar a la derecha (si <b>side</b> es <b>true</b>)
+	 * o a la izquierda (si <b>size</b> es <b>false</b>) un nodo pasado por parámetro.
+	 * Este método se utiliza en la inserción de un nuevo nodo o en la eliminación de
+	 * un nodo existente en el árbol para equilibrarlo.
+	 * 
+	 * @param side indica el lado de rotación. Si es <b>true</b> rota el nodo <b>node</b>
+	 * a la derecha, si no lo rota a la izquierda.
+	 * @param node es el nodo que se quiere rotar.
+	 */
+	private void rotation (boolean side, Node<V> node) {
+		Node<V> x;
+		if (side) {
+			// Simple Right rotation
+			x = ((innerNode<V>) node).getLeftChild();
+			((innerNode<V>) node).setLeftChild(((innerNode<V>)x).getRightChild());
+			((innerNode<V>) x).setRightChild(node);
+			((innerNode<V>) node).setParent(x);
+		} else {
+			// Simple Left rotation
+			x =((innerNode<V>) node).getRightChild();
+			((innerNode<V>) node).setRightChild(((innerNode<V>) x).getLeftChild());
+			((innerNode<V>) x).setLeftChild(node);
+			((innerNode<V>) node).setParent(x);
+		}
+	}
 
 	@Override
 	public Node<V> search(V element) {
