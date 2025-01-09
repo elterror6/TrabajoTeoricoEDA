@@ -8,9 +8,9 @@ package Tree;
 public interface Node <V> {
 	
 	/**
-	 * Este método devuelve el ID del elemento.
+	 * Este método devuelve el ID del nodo.
 	 *
-	 * @return El ID del elemento.
+	 * @return El ID del nodo.
 	 */
 	public abstract int getID ();
 	
@@ -20,4 +20,5 @@ public interface Node <V> {
 	 * @return El elemento contenido.
 	 */
 	public abstract V getElement ();
+
 }
