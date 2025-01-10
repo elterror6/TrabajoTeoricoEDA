@@ -61,6 +61,7 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 		}
 		return find;
 	}
+	
 	/**
 	 * Este método busca recursivamente un nodo con el elemento dado. Si el identificador
 	 * del elemento es mayor que la del nodo actual va hacia el hijo derecho, si es menor
@@ -84,10 +85,62 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 		}
 		return find;
 	}
-
+	
+	/**
+	 * Este método realiza una inserción de un elemento en el árbol. La inserción es igual
+	 * que en un árbol de búsqueda binario, pero no puede haber dos nodos rojos de seguido,
+	 * para conseguir eso se comprueba si el tío del nodo insertado es rojo o negro o nulo,
+	 * si el tío es rojo se cambian a negro el nodo padre y el nodo tío y el abuelo cambia
+	 * a rojo, y así hasta que se llega al nodo raíz, que debe ser negro, si el tío del nodo
+	 * es negro o nulo dependiendo de si el padre es hijo opuesto al nodo o no se hace una
+	 * rotación doble o simple.
+	 */
 	@Override
 	public void insertion(V element) {
-		// TODO Realizar método que inserte un elemento en un árbol rojo-negro
+		Node<V> node = new innerNode<>(element);
+		Node<V> n, aux;
+		// Look where can i put the new node
+		if (this.root == null) {
+			this.root = node;
+		} else {
+			n = this.root;
+			while (n.getElement() != null) {
+				if (n.getID() > node.getID()) {
+					n = ((innerNode<V>) n).getRightChild();
+				} else if (n.getID() < node.getID()) {
+					n = ((innerNode<V>) n).getLeftChild();
+				}
+			}
+			n = ((innerNode<V>) n).getParent();
+			if (n.getID()>node.getID()) {
+				((innerNode<V>) n).setRightChild(node);
+				n = ((innerNode<V>) n).getRightChild();
+			} else if (n.getID()>node.getID()) {
+				((innerNode<V>) n).setRightChild(node);
+				n = ((innerNode<V>) n).getLeftChild();
+			}
+			// Look if i must balance the tree
+			if (((innerNode<V>)((innerNode<V>) n).getParent()).getColor()) {
+				if (((innerNode<V>)((innerNode<V>) n).getUncle()).getColor()) {
+					while (((innerNode<V>)n).getParent() != null) {
+						((innerNode<V>)((innerNode<V>) n).getParent()).setColor(false);
+						((innerNode<V>)((innerNode<V>) n).getUncle()).setColor(false);
+						((innerNode<V>)((innerNode<V>)((innerNode<V>) n).getParent()).getParent()).setColor(true);
+						n = ((innerNode<V>)((innerNode<V>)((innerNode<V>) n).getParent()).getParent()).getParent();
+					}
+					((innerNode<V>) this.root).setColor(false);				
+				} else {
+					boolean doubleR = (((innerNode<V>) n).isRightChild() && !((innerNode<V>)((innerNode<V>) n).getParent()).isRightChild()) || (!((innerNode<V>) n).isRightChild() && ((innerNode<V>)((innerNode<V>) n).getParent()).isRightChild());
+					if (doubleR) {
+						aux = ((innerNode<V>) n).getParent();
+						rotation(!((innerNode<V>) n).isRightChild(),n);
+						rotation(!((innerNode<V>) aux).isRightChild(),aux);
+					} else {
+						rotation(!((innerNode<V>) n).isRightChild(),n);
+					}
+				}
+			}
+		}
 		
 	}
 
@@ -129,6 +182,7 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 				this.ID = ((String) element).hashCode();
 			}
 			this.element = element;
+			this.color = true;
 			this.rightChild = new innerNode<V>();
 			this.leftChild = new innerNode<V>();
 		}
@@ -149,22 +203,21 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 		public Node<V> getParent() {
 			return parent;
 		}
+		/**
+		 * Este método colorea el nodo de rojo (si <b>color</b> es <b>true</b>) o a negro (si <b>color</b> es <b>true</b>).
+		 * @param color si es <b>true</b> es un nodo rojo, si no es negro.
+		 */
+		public void setColor(boolean color) {
+			this.color = color;
+		}
 
 		/**
-		 * Este método conecta el nodo a un nodo padre. Si el nodo
-		 * es un nodo hoja entonces no cambia el color del nodo.
+		 * Este método conecta el nodo a un nodo padre.
 		 * 
 		 * @param parent nuevo nodo padre del nodo.
 		 */
 		public void setParent(Node<V> parent) {
 			this.parent = parent;
-			if (this.element != null) {
-				if  (((innerNode<V>)this.parent).getColor()) {
-					this.color = !((innerNode<V>)this.parent).getColor();
-				} else {
-					this.color = !((innerNode<V>)this.parent).getColor();
-				}
-			}	
 		}
 
 		/**
@@ -212,6 +265,36 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 			return color;
 		}
 		
+		/**
+		 * Este método devuelve el nodo tío del nodo.
+		 * 
+		 * @return El nodo tío del nodo.
+		 */
+		public Node<V> getUncle () {
+			Node<V> uncle = null;
+			Node<V> parent = this.parent;
+			Node<V> grandparent = ((innerNode<V>) parent).getParent();
+			
+			if (((innerNode<V>) grandparent).getLeftChild().getID() == parent.getID()) {
+				uncle = ((innerNode<V>) grandparent).getRightChild();
+			} else {
+				uncle = ((innerNode<V>) grandparent).getLeftChild();
+			}
+			
+			return uncle;
+		}
+		/**
+		 * Este método devuelve si el nodo es un hijo derecho o no.
+		 * 
+		 * @return <b>true</b> si el nodo es un hijo derecho.
+		 */
+		public boolean isRightChild () {
+			boolean r = false;
+			if (((innerNode<V>) this.parent).rightChild.getID() == this.ID) {
+				r = true;
+			}
+			return r;
+		}
 		@Override
 		public int getID() {
 			return this.ID;
