@@ -97,51 +97,59 @@ public class RedBlackTree <V> implements BinaryTree <V> {
 	 */
 	@Override
 	public void insertion(V element) {
-		Node<V> node = new innerNode<>(element);
-		Node<V> n, aux;
-		// Look where can i put the new node
+		Node <V> newNode = new innerNode<>(element), current;
+		boolean nullChild = false;
 		if (this.root == null) {
-			this.root = node;
+			this.root = newNode;
 		} else {
-			n = this.root;
-			while (n.getElement() != null) {
-				if (n.getID() > node.getID()) {
-					n = ((innerNode<V>) n).getRightChild();
-				} else if (n.getID() < node.getID()) {
-					n = ((innerNode<V>) n).getLeftChild();
+			current = this.root;
+			while (!nullChild) {
+				if (newNode.getID()>current.getID()) {
+					if (((innerNode<V>) current).getRightChild().getElement() != null) {
+						current = ((innerNode<V>) current).getRightChild();
+					} else {
+						((innerNode<V>) current).setRightChild(newNode);
+						((innerNode<V>)((innerNode<V>) current).getRightChild()).setParent(current);
+						current = ((innerNode<V>) current).getRightChild();
+						nullChild = true;
+					}
+				} else if (newNode.getID()<current.getID()) {
+					if (((innerNode<V>) current).getLeftChild().getElement() != null) {
+						current = ((innerNode<V>) current).getLeftChild();
+					} else {
+						((innerNode<V>) current).setLeftChild(newNode);
+						((innerNode<V>)((innerNode<V>) current).getLeftChild()).setParent(current);
+						current = ((innerNode<V>) current).getLeftChild();
+						nullChild = true;
+					}
+				} else {
+					current = null;
+					break;
 				}
 			}
-			n = ((innerNode<V>) n).getParent();
-			if (n.getID()>node.getID()) {
-				((innerNode<V>) n).setRightChild(node);
-				n = ((innerNode<V>) n).getRightChild();
-			} else if (n.getID()>node.getID()) {
-				((innerNode<V>) n).setRightChild(node);
-				n = ((innerNode<V>) n).getLeftChild();
-			}
-			// Look if i must balance the tree
-			if (((innerNode<V>)((innerNode<V>) n).getParent()).getColor()) {
-				if (((innerNode<V>)((innerNode<V>) n).getUncle()).getColor()) {
-					while (((innerNode<V>)n).getParent() != null) {
-						((innerNode<V>)((innerNode<V>) n).getParent()).setColor(false);
-						((innerNode<V>)((innerNode<V>) n).getUncle()).setColor(false);
-						((innerNode<V>)((innerNode<V>)((innerNode<V>) n).getParent()).getParent()).setColor(true);
-						n = ((innerNode<V>)((innerNode<V>)((innerNode<V>) n).getParent()).getParent()).getParent();
-					}
-					((innerNode<V>) this.root).setColor(false);				
-				} else {
-					boolean doubleR = (((innerNode<V>) n).isRightChild() && !((innerNode<V>)((innerNode<V>) n).getParent()).isRightChild()) || (!((innerNode<V>) n).isRightChild() && ((innerNode<V>)((innerNode<V>) n).getParent()).isRightChild());
-					if (doubleR) {
-						aux = ((innerNode<V>) n).getParent();
-						rotation(!((innerNode<V>) n).isRightChild(),n);
-						rotation(!((innerNode<V>) aux).isRightChild(),aux);
+			
+			if (current != null) {
+				if (((innerNode<V>) current).getColor() && ((innerNode<V>)((innerNode<V>) current).getParent()).getColor()) {
+					if (((innerNode<V>)((innerNode<V>) current).getUncle()).getColor()) {
+						while (((innerNode<V>)((innerNode<V>) current).getParent()).getParent() != null) {
+							((innerNode<V>)((innerNode<V>) current).getParent()).setColor(false);
+							((innerNode<V>)((innerNode<V>) current).getUncle()).setColor(false);
+							((innerNode<V>)((innerNode<V>)((innerNode<V>) current).getParent()).getParent()).setColor(true);
+							current = ((innerNode<V>)((innerNode<V>) current).getParent()).getParent();
+						}
 					} else {
-						rotation(!((innerNode<V>) n).isRightChild(),n);
+						((innerNode<V>)((innerNode<V>) current).getParent()).setColor(false);
+						((innerNode<V>)((innerNode<V>)((innerNode<V>) current).getParent()).getParent()).setColor(true);
+						if (( ((innerNode<V>)((innerNode<V>) current).getParent()).isRightChild() && ((innerNode<V>) current).isRightChild() )||( !((innerNode<V>)((innerNode<V>) current).getParent()).isRightChild() && !((innerNode<V>) current).isRightChild() )) {
+							rotation(!((innerNode<V>) current).isRightChild(),((innerNode<V>)((innerNode<V>) current).getParent()).getParent());
+						} else {
+							rotation(!((innerNode<V>) current).isRightChild(),((innerNode<V>) current).getParent());
+							rotation(!((innerNode<V>) current).isRightChild(),((innerNode<V>) current).getParent());
+						}
 					}
 				}
 			}
 		}
-		
 	}
 
 	@Override
